@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Editar Archivo{% endblock %}
+{% block content %}
+<h1>Editar Archivo Crítico</h1>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<form method="POST">
+    <div>
+        <label for="nombre_archivo">Nombre del Archivo</label><br>
+        <input type="text" name="nombre_archivo" id="nombre_archivo" value="{{ archivo.nombre_archivo }}" class="{{ 'changed-text' if archivo_modificado else '' }}" required>
+    </div>
+    <div>
+        <label for="contenido">Contenido</label><br>
+        <textarea name="contenido" id="contenido" required>{{ archivo.contenido }}</textarea>
+    </div>
+    <div>
+        <label for="algoritmo">Algoritmo de Hash</label><br>
+        <select name="algoritmo" id="algoritmo">
+            <option value="SHA128" {% if archivo.algoritmo =='SHA128' %} selected {% endif %}>SHA128</option>
+            <option value="SHA256" {% if archivo.algoritmo =='SHA256' %} selected {% endif %}>SHA256</option>
+            <option value="SHA512" {% if archivo.algoritmo =='SHA512' %} selected {% endif %}>SHA512</option>
+        </select>
+    </div>
+    <div class="button-container">
+        <button type="submit" class="button">Actualizar Archivo</button>
+        <a href="{{ url_for('monitor') }}" class="button">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

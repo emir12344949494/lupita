@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Archivos Críticos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{{ url_for('static', filename='images/fondo.jpg') }}'); /* Ajusta la ruta según tu estructura de archivos */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #fff; /* Texto blanco para el cuerpo */
+            margin: 0;
+            padding: 0;
+            min-height: 100vh; /* Asegura que el cuerpo ocupe al menos la altura completa de la ventana */
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con más opacidad para mejor contraste */
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra para darle profundidad */
+        }
+
+        nav a {
+            color: #0979b0; /* Color azul deseado */
+            text-decoration: none;
+            font-weight: bold; /* Hacer el texto más destacable */
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+            color: #055f8c; /* Color azul más oscuro al pasar el ratón */
+        }
+
+        .container {
+            padding: 20px;
+            background-color: rgba(30, 30, 30, 0.8); /* Fondo oscuro con opacidad para el contenedor */
+            border-radius: 10px;
+            margin-top: 20px; /* Asegura que el contenido no esté pegado al borde del contenedor */
+        }
+
+        h1 {
+            color: #8e44ad; /* Color púrpura para encabezados */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        input[type="submit"] {
+            background-color: #8e44ad;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #732d91;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+
+        /* Tabla y monitor */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #333; /* Fondo oscuro para la tabla */
+        }
+
+        th, td {
+            border: 1px solid #555; /* Borde más claro para mejor contraste */
+            padding: 8px;
+            color: #fff; /* Texto blanco para contraste */
+            word-break: break-word; /* Asegura que el texto largo se divida en la columna */
+        }
+
+        th {
+            background-color: #444; /* Fondo más oscuro para los encabezados */
+        }
+
+        .changed {
+            background-color: #f8d7da; /* Rojo suave para cambios */
+            color: #000; /* Texto negro para la fila cambiada para mejor legibilidad */
+        }
+
+        /* Centrar el contenido de las celdas de la tabla */
+        .table-centered td {
+            text-align: center;  /* Centra el texto horizontalmente */
+            vertical-align: middle;  /* Centra el texto verticalmente */
+            word-wrap: break-word;  /* Permite el salto de línea dentro de la celda */
+        }
+
+        /* Estilo para las celdas del hash */
+        .table-centered .hash-cell {
+            overflow-wrap: break-word;  /* Permite que el texto largo se divida */
+            word-break: break-all;  /* Permite la división de palabras largas */
+        }
+
+        textarea {
+            max-width: 20cm;  /* Ancho máximo de 20 cm */
+            width: 100%;  /* Ancho ajustable al contenedor */
+            height: auto;  /* Altura automática */
+            overflow-wrap: break-word;  /* Permite el ajuste de línea */
+            word-wrap: break-word;  /* Permite el ajuste de línea */
+            word-break: break-all;  /* Permite la división de palabras largas */
+            white-space: pre-wrap;  /* Mantiene los saltos de línea y ajusta el texto */
+            padding: 10px;  /* Espaciado interno */
+            border: 1px solid #444;  /* Borde */
+            border-radius: 5px;  /* Bordes redondeados */
+            background-color: #333;  /* Fondo */
+            color: #fff;  /* Color del texto */
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            width: 150px; /* Ajusta el tamaño según sea necesario */
+            text-align: center; /* Asegura el texto centrado */
+            box-sizing: border-box; /* Incluye el borde y el relleno en el tamaño total */
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px; /* Espacio entre los botones */
+        }
+
+        .modification-message {
+            color: #f44336; /* Rojo para indicar modificación */
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        function confirmarEliminacion(fileId) {
+            const confirmar = confirm("¿Estás seguro de que deseas eliminar este archivo?");
+            if (confirmar) {
+                window.location.href = `/delete/${fileId}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('monitor') }}">Monitor de Archivos</a>
+        <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+    </nav>
+
+    <div class="container">
+        <h1>Archivos Críticos</h1>
+
+        <!-- Formulario para agregar nuevos archivos críticos -->
+        <form method="POST" action="{{ url_for('monitor') }}">
+            <input type="text" name="nombre_archivo" placeholder="Nombre del Archivo" required>
+            <textarea name="contenido" placeholder="Contenido del archivo" required></textarea>
+            <select name="algoritmo" required>
+                <option value="SHA128">SHA128</option>
+                <option value="SHA256">SHA256</option>
+                <option value="SHA512">SHA512</option>
+            </select>
+            <input type="submit" value="Registrar o Actualizar Archivo">
+        </form>
+
+        <!-- Tabla de archivos críticos -->
+        <table class="table-centered">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Algoritmo</th>
+                    <th>Fecha</th>
+                    <th>Hash</th>
+                    <th>Estado</th> <!-- Nueva columna para el estado -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for archivo in archivos %}
+                <tr class="{% if archivo.estado == 'editado' %} changed {% endif %}">
+                    <td>{{ archivo.nombre_archivo }}</td>
+                    <td>{{ archivo.algoritmo }}</td>
+                    <td>{{ archivo.fecha_hora }}</td>
+                    <td class="hash-cell">
+                        {% for parte in archivo.hash_dividido %}
+                            {{ parte }}<br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ archivo.estado if archivo.estado else 'no editado' }}</td> <!-- Mostrar el estado -->
+                    <td>
+                        <a href="{{ url_for('edit_file', file_id=archivo._id) }}" class="button">Editar</a> |
+                        <a href="#" onclick="confirmarEliminacion('{{ archivo._id }}')" class="button">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Inicio{% endblock %}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            background-image: url('{{ url_for('static', filename='images/fondo.png') }}');
+            background-size: cover;
+            background-position: center;
+        }
+        header, footer {
+            background-color: rgba(31, 31, 31, 0.8); /* Fondo oscuro semi-transparente */
+            padding: 20px;
+            text-align: center;
+        }
+        header h1, footer p {
+            margin: 0;
+            color: #00ffcc; /* Color de texto destacado */
+        }
+        main {
+            padding: 20px;
+            background-color: rgba(30, 30, 30, 0.8); /* Fondo oscuro semi-transparente */
+            border-radius: 10px;
+        }
+        section {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: rgba(30, 30, 30, 0.8); /* Fondo oscuro semi-transparente */
+            border-radius: 10px;
+        }
+        section h2 {
+            color: #00ffcc; /* Color de texto destacado */
+        }
+        section p {
+            line-height: 1.6;
+        }
+        footer {
+            color: #ffffff;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    {% extends "base.html" %}
+    {% block content %}
+    <header>
+        <h1>Bienvenido a HackUniverse</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Seguridad en los Archivos Críticos</h2>
+            <p>Los archivos críticos son aquellos que contienen información vital para el funcionamiento y la seguridad de una organización. Estos pueden incluir datos financieros, información personal de empleados y clientes, propiedad intelectual, y cualquier otro tipo de información cuya pérdida o alteración podría causar un daño significativo.</p>
+        </section>
+        <section>
+            <h2>Importancia de la Seguridad en los Archivos Críticos</h2>
+            <p>Proteger los archivos críticos es esencial para prevenir fraudes, asegurar la privacidad de la información y mantener la integridad de los datos. Un fallo en la seguridad de estos archivos puede resultar en graves consecuencias legales, financieras y reputacionales.</p>
+        </section>
+        <section>
+            <h2>Estrategias de Seguridad</h2>
+            <p><strong>1. Encriptación:</strong> La encriptación convierte los datos en un formato ilegible para cualquier persona que no tenga la clave de desencriptación. Es una de las formas más efectivas de proteger la información sensible.</p>
+            <p><strong>2. Control de Acceso:</strong> Implementar controles de acceso estrictos asegura que solo las personas autorizadas puedan acceder a los archivos críticos. Esto incluye el uso de contraseñas seguras, autenticación multifactor y permisos basados en roles.</p>
+            <p><strong>3. Copia de Seguridad (Backup):</strong> Realizar copias de seguridad regulares de los archivos críticos garantiza que se pueda recuperar la información en caso de pérdida de datos o ataque cibernético.</p>
+            <p><strong>4. Monitoreo y Auditoría:</strong> El monitoreo constante de los accesos y modificaciones a los archivos críticos puede ayudar a detectar actividades sospechosas. Las auditorías regulares también son esenciales para asegurar que las políticas de seguridad se están siguiendo adecuadamente.</p>
+            <p><strong>5. Formación y Concienciación:</strong> Capacitar a los empleados sobre las mejores prácticas de seguridad y la importancia de proteger los archivos críticos puede reducir el riesgo de errores humanos que comprometan la seguridad.</p>
+        </section>
+        <section>
+            <h2>Beneficios de la Seguridad en los Archivos Críticos</h2>
+            <p><strong>Protección contra Ciberataques:</strong> Previene el acceso no autorizado y la manipulación de datos por parte de hackers.</p>
+            <p><strong>Cumplimiento Normativo:</strong> Asegura que la organización cumple con las regulaciones y leyes de protección de datos.</p>
+            <p><strong>Reputación:</strong> Mantiene la confianza de clientes y socios al demostrar un compromiso con la seguridad de la información.</p>
+            <p><strong>Continuidad del Negocio:</strong> Garantiza que los datos esenciales estén disponibles y protegidos, permitiendo la continuidad operativa en caso de incidentes.</p>
+        </section>
+    </main>
+    {% endblock %}
+</body>
+</html>

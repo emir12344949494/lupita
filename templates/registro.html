@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Registrarse{% endblock %}
+{% block content %}
+<h1>Registrarse</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.nombre.label }}<br>
+        {{ form.nombre(size=32) }}
+        {% if form.nombre.errors %}
+            <ul>
+                {% for error in form.nombre.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.apellido.label }}<br>
+        {{ form.apellido(size=32) }}
+        {% if form.apellido.errors %}
+            <ul>
+                {% for error in form.apellido.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.genero.label }}<br>
+        {{ form.genero(size=32) }}
+        {% if form.genero.errors %}
+            <ul>
+                {% for error in form.genero.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.correo.label }}<br>
+        {{ form.correo(size=32) }}
+        {% if form.correo.errors %}
+            <ul>
+                {% for error in form.correo.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.contraseña.label }}<br>
+        {{ form.contraseña(size=32) }}
+        {% if form.contraseña.errors %}
+            <ul>
+                {% for error in form.contraseña.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.confirmar_contraseña.label }}<br>
+        {{ form.confirmar_contraseña(size=32) }}
+        {% if form.confirmar_contraseña.errors %}
+            <ul>
+                {% for error in form.confirmar_contraseña.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}
+

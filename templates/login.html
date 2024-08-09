@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Iniciar Sesión{% endblock %}
+{% block content %}
+<h1>Iniciar Sesión</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.correo.label }}<br>
+        {{ form.correo(size=32) }}
+    </div>
+    <div>
+        {{ form.contraseña.label }}<br>
+        {{ form.contraseña(size=32) }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}
